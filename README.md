@@ -12,8 +12,7 @@
 
 <p align="center">
   
-    <img src="https://camo.githubusercontent.com/d2b4065a8edcda1b0a84870f54e3c3d05c1fcb8ef827a3b63882312579050147/68747470733a2f2f696d672e736869656c64732e696f2f6e706d2f762f6e706d2e737667"
-         alt="Npm">
+   
   
    <img src="https://d2zv2ciw0ln4h1.cloudfront.net/uploads/react-plus-nodejs-small.png_04e540dd4f.png"
          alt="React">
