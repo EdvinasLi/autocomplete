@@ -3,12 +3,12 @@ import './Homepage.css'
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 export default function Homepage() {
-    const [refresh, setRefresh] = useState(false)
+
     const [clients, setClients] = useState([])
-    const [form, setForm] = useState({})
-    const [keyword, setKeyword] = useState('')
-    const [suggestions, setSuggestions] = useState([])
-    const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NzQ0MTM5MjgsImlkIjoiYWRtaW4iLCJvcmlnX2lhdCI6MTY3NDQxMDMyOH0.ScyUMetZEHeZPpnWWxaQKGTpnvQTnLOic52RvN6CsHA'
+
+    const [value, setValue] = useState('')
+
+    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NzQ0NzA4NDEsImlkIjoiYWRtaW4iLCJvcmlnX2lhdCI6MTY3NDQ2NzI0MX0.BBrkSB6-7XbBYbQ3lRhxuKvSAuSsDobMKkNnM92iMQs"
     useEffect(() => {
         axios.get('https://invoice-api.c8.lt/api/v1/clients', {
             headers: {
@@ -21,76 +21,57 @@ export default function Homepage() {
 
             })
     }, [])
-    const handleForm = (e) => {
-        setForm({ ...form, [e.target.name]: e.target.value })
+
+    const onChange = (e) => {
+
+        setValue(e.target.value);
     }
-    const handleSubmit = (e) => {
-        e.preventDefault()
 
+    const onSearch = (searchTerm, event) => {
 
-
-
-        axios.post('/api/users/register/', form)
-            .then(resp => {
-
-
-                window.scrollTo(0, 0)
-
-
-            })
-            .catch(error => {
-                console.log(error)
-            })
+        setValue(searchTerm)
+        console.log('search', searchTerm)
     }
+
+
     /*
     Suggestions
     */
-    const handleSuggestion = (e) => {
-        e.preventDefault()
-
-        if (keyword === '')
-            return setRefresh(!refresh)
-
-        axios.get('https://invoice-api.c8.lt/api/v1/clients?code=' + keyword, {
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
-
-        })
-            .then(resp => {
-                setSuggestions(resp.data)
-            })
-            .catch(error => {
-                console.log(error)
-
-
-            })
-    }
 
     return (<><div className="currentClients">
         <ul>
-            {clients.map((client, index) => <li>{client.name} </li>
+            {clients.map((client, index) => <li key={index}>{client.name} </li>
             )}
         </ul>
 
     </div>
         <div className='formMain'>
-            <form onSubmit={handleSubmit}>
+            <form >
                 <div>
                     <label className="mb-1">Vardas:</label><br />
-                    <input type="text" name="first_name" placeholder="Jūsų vardas" onChange={(e) => setKeyword(e.target.value)} />
+                    <input type="text" name="first_name" placeholder="Jūsų vardas" value={value} onChange={onChange} />
+
+                    <div className="dropdown">
+                        {clients.filter(item => {
+                            const searchTerm = value.toLocaleLowerCase();
+                            const name = item.name.toLocaleLowerCase()
+                            return searchTerm && name.startsWith(searchTerm)
+                        })
+                            .map((item, index) => <div key={index} onClick={() => onSearch(item.name)}>
+                                {item.name}</div>)}
+                    </div>
                 </div>
                 <div>
                     <label className="mb-1">Pavardė:</label><br />
-                    <input type="text" name="last_name" onChange={handleForm} placeholder="Jūsų pavardė" />
+                    <input type="text" name="last_name" placeholder="Jūsų pavardė" />
                 </div>
                 <div >
                     <label className="mb-1">El. pašto adresas:</label><br />
-                    <input type="text" name="company_name" onChange={handleForm} placeholder="Įmonės pavadinimas" />
+                    <input type="text" name="company_name" placeholder="Įmonės pavadinimas" />
                 </div>
                 <div >
                     <label className="mb-1">Slaptažodis:</label><br />
-                    <input type="text" name="company_number" onChange={handleForm} placeholder="Įmonės numeris" />
+                    <input type="text" name="company_number" placeholder="Įmonės numeris" />
                 </div>
                 <button >Išrašyti SF</button>
             </form>
