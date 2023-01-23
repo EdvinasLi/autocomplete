@@ -22,8 +22,8 @@ const Login = () => {
 
         axios.post('https://invoice-api.c8.lt/login', form)
             .then(resp => {
-
-                console.log(resp)
+                localStorage.setItem('Bearer_token', resp.data.token)
+                console.log(resp.data.token)
 
                 setTimeout(() => {
 

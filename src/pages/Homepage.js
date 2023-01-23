@@ -7,8 +7,8 @@ export default function Homepage() {
     const [clients, setClients] = useState([])
 
     const [value, setValue] = useState('')
+    const token = localStorage.getItem('Bearer_token')
 
-    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NzQ0NzA4NDEsImlkIjoiYWRtaW4iLCJvcmlnX2lhdCI6MTY3NDQ2NzI0MX0.BBrkSB6-7XbBYbQ3lRhxuKvSAuSsDobMKkNnM92iMQs"
     useEffect(() => {
         axios.get('https://invoice-api.c8.lt/api/v1/clients', {
             headers: {
@@ -55,7 +55,7 @@ export default function Homepage() {
                         {clients.filter(item => {
                             const searchTerm = value.toLocaleLowerCase();
                             const name = item.name.toLocaleLowerCase()
-                            return searchTerm && name.startsWith(searchTerm)
+                            return searchTerm && name.startsWith(searchTerm) && name !== searchTerm;
                         })
                             .map((item, index) => <div key={index} onClick={() => onSearch(item.name)}>
                                 {item.name}</div>)}
