@@ -97,7 +97,7 @@ export default function Homepage() {
         { name: "Kestas", lastName: "cvxc", code: "456", phone: "987654321" },
         { name: "Edvis", lastName: "fghfgh", code: "789", phone: "123456789" },
         { name: "Mykolas", lastName: "ghgf", code: "012", phone: "987654321" },
-        { name: "Janina", lastName: "ertretre", code: "345", phone: "123456789" },
+        { name: "Janina", lastName: "ertretre", code: "345", phone: "123453246789" },
     ];
     const [search, setSearch] = useState("");
     const [filteredPersons, setFilteredPersons] = useState([]);
