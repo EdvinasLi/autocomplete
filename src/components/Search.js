@@ -4,81 +4,68 @@ import Autocomplete from '@mui/material/Autocomplete';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 
-const Search = (props) => {
-    const [clients, setClients] = useState([])
+const Search = () => {
+
+
+
     const token = localStorage.getItem('Bearer_token')
-    const [data, setData] = useState([]);
-    const [param, setParam] = useState('')
-    const [selectedValue, setSelectedValue] = useState('awdawd');
-    const { fields, setFields } = props;
+    const [formData, setFormData] = useState({
+        name: '',
+        code: '',
+        vat: '',
+        address: ''
+    });
+    const [suggestions, setSuggestions] = useState([]);
+    useEffect(() => {
+        async function fetchData() {
+            const response = await fetch(`https://invoice-api.c8.lt/api/v1/clients?name=${formData.name}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
 
-
-
-    async function fetchData(term) {
-        const response = await fetch(`https://invoice-api.c8.lt/api/v1/clients?name=${term}`, {
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
-        });
-        const json = await response.json();
-        console.log(json);
-        setData(json);
-    }
-
-    // useEffect(() => {
-    //     setSelectedValue('Labas');
-    // }, []);
-
-    // useEffect(() => {
-    //     async function fetchData() {
-    //         const response = await fetch(`https://invoice-api.c8.lt/api/v1/clients?name=Client`, {
-    //             headers: {
-    //                 'Authorization': `Bearer ${token}`
-    //             }
-    //         });
-    //         const json = await response.json();
-    //         setData(json);
-
-    //     }
-    //     fetchData();
-    // }, []);
-
-    // if (!data) {
-    //     return <div>Loading...</div>;
-    // }
-
-    //console.log(data)
-
-    const onChange = (e) => {
-
-        // setParam(e.target.value);
-        // console.log(param)
-
-        if (e.target.value != '')
-            fetchData(e.target.value);
-
-    }
-
-    //console.log(param)
-
+            });
+            const data = await response.json();
+            setSuggestions(Array.from(data))
+            console.log(data)
+        }
+        if (formData.name) {
+            fetchData();
+        }
+    }, [formData.name]);
     return (
-
-        <Autocomplete
-            getOptionLabel={(option) => option.name}
-            disablePortal
-            id="combo-box-demo"
-            options={data}
-            sx={{ width: 300 }}
-            onChange={(e, value) => setFields(value)}
-            // value={fields[props]}
-            renderInput={(params) =>
-
-                <TextField
-                    value={selectedValue}
-                    onChange={(event, newValue) => onChange(event)} label={props.label} {...params} />}
-
-        />
-    )
+        <form>
+            <TextField
+                label="Name"
+                value={formData.name}
+                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+            />
+            <Autocomplete
+                freeSolo
+                options={suggestions}
+                getOptionLabel={(option) => option.name}
+                renderInput={(params) => <TextField {...params} label="SearchBYNAme" />}
+                onChange={(event, newValue) => {
+                    setFormData({ ...formData, name: newValue.name, code: newValue.code, vat: newValue.vat, address: newValue.address });
+                }}
+            />
+            <TextField
+                label="Code"
+                value={formData.code}
+                onChange={(e) => setFormData({ ...formData, code: e.target.value })}
+            />
+            <TextField
+                label="VAT"
+                value={formData.vat}
+                onChange={(e) => setFormData({ ...formData, vat: e.target.value })}
+            />
+            <TextField
+                label="Address"
+                value={formData.address}
+                onChange={(e) => setFormData({ ...formData, address: e.target.value })}
+            />
+            <button>Pateikti</button>
+        </form>
+    );
 }
 
 export default Search
