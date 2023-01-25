@@ -32,8 +32,15 @@ const Search = () => {
             fetchData();
         }
     }, [formData.name]);
+
+
+    const handleSubmit = (event) => {
+        event.preventDefault()
+        console.log(formData)
+    }
+
     return (
-        <form>
+        <form onSubmit={handleSubmit}>
             <TextField
                 label="Name"
                 value={formData.name}
