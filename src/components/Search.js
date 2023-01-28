@@ -18,13 +18,14 @@ const Search = () => {
     const [suggestions, setSuggestions] = useState([]);
     useEffect(() => {
         async function fetchData() {
-            const response = await fetch(`https://iapi2.c8.lt/api/v1/clients?code=${formData.name}`, {
+            const response = await fetch(`https://iapi2.c8.lt/api/v1/clients?name=${formData.name}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
 
             });
             const data = await response.json();
+            console.log(data)
             setSuggestions(Array.from(data))
             console.log(data)
         }
