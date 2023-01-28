@@ -18,7 +18,7 @@ const Search = () => {
     const [suggestions, setSuggestions] = useState([]);
     useEffect(() => {
         async function fetchData() {
-            const response = await fetch(`https://invoice-api.c8.lt/api/v1/clients?name=${formData.name}`, {
+            const response = await fetch(`https://iapi2.c8.lt/api/v1/clients?code=${formData.name}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
