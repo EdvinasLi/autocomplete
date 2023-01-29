@@ -6,7 +6,7 @@ const Header = () => {
 
     const navigate = useNavigate()
     const info = localStorage.getItem('LoggedIn')
-    console.log(info)
+
 
     const handleLogout = () => {
         localStorage.setItem('LoggedIn', false);

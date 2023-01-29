@@ -18,7 +18,7 @@ const Search = () => {
     const [suggestions, setSuggestions] = useState([]);
     useEffect(() => {
         async function fetchData() {
-            const response = await fetch(`https://iapi2.c8.lt/api/v1/clients?name=${formData.name}`, {
+            const response = await fetch(`https://iapi2.c8.lt/api/v1/clients?client=${formData.name}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
@@ -42,18 +42,16 @@ const Search = () => {
 
     return (
         <form onSubmit={handleSubmit}>
-            <TextField
-                label="Name"
-                value={formData.name}
-                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-            />
+
             <Autocomplete
                 freeSolo
                 options={suggestions}
-                getOptionLabel={(option) => option.name}
-                renderInput={(params) => <TextField {...params} label="SearchBYNAme" />}
+                getOptionLabel={(option) => option.name ?? option}
+                renderInput={(params) => <TextField {...params} label="Search By Name" value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} />}
+                value={formData.name}
                 onChange={(event, newValue) => {
-                    setFormData({ ...formData, name: newValue.name, code: newValue.code, vat: newValue.vat, address: newValue.address });
+                    setFormData({ ...formData, name: newValue.name, code: newValue.code, vat: newValue.vat, address: newValue.address })
+                    console.log(event.target.value);
                 }}
             />
             <TextField
