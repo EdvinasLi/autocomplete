@@ -25,9 +25,11 @@ const Search = () => {
 
             });
             const data = await response.json();
-            console.log(data)
-            setSuggestions(Array.from(data))
-            console.log(data)
+
+            if (data) {
+                setSuggestions(Array.from(data))
+
+            }
         }
         if (formData.name) {
             fetchData();
@@ -50,8 +52,11 @@ const Search = () => {
                 renderInput={(params) => <TextField {...params} label="Search By Name" value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} />}
                 value={formData.name}
                 onChange={(event, newValue) => {
-                    setFormData({ ...formData, name: newValue.name, code: newValue.code, vat: newValue.vat, address: newValue.address })
-                    console.log(event.target.value);
+                    if (newValue) {
+                        setFormData({ ...formData, name: newValue.name, code: newValue.code, vat: newValue.vat, address: newValue.address });
+                    } else {
+                        setFormData({ ...formData, name: '', code: '', vat: '', address: '' });
+                    }
                 }}
             />
             <TextField
