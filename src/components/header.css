@@ -1,0 +1,10 @@
+.header ul {
+    width: 100vw;
+    display: flex;
+    justify-content: space-around;
+    list-style: none;
+}
+.header a{
+    text-decoration: none;
+    color: black;
+}

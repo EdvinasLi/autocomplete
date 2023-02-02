@@ -22,13 +22,15 @@ const Login = () => {
 
         axios.post('https://invoice-api.c8.lt/login', form)
             .then(resp => {
-
-                console.log(resp)
+                localStorage.setItem('Bearer_token', resp.data.token)
+                localStorage.setItem('LoggedIn', true)
+                console.log(resp.data.token)
 
                 setTimeout(() => {
 
 
                     navigate('/home')
+                    window.location.reload()
                 }, 1000)
             })
             .catch(error => {
